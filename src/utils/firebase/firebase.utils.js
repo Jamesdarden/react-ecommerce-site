@@ -4,6 +4,9 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -34,15 +37,17 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 // points to our db
 export const db = getFirestore()
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation ={}) => {
+    if(!userAuth) return;
+
     const userDocRef = doc(db, 'users', userAuth.uid);
 
-    console.log(userDocRef)
-//allows to see if instance exsist and also access the   or creates it
+    // console.log(userDocRef)
+    //allows to see if instance exsist and also access the   or creates it
     const userSnapShot = await getDoc(userDocRef)
 
-    console.log(userSnapShot)
-    console.log(userSnapShot.exists())
+    // console.log(userSnapShot)
+    // console.log(userSnapShot.exists())
 
     // if exists returns true !reverses
     if(!userSnapShot.exists()){
@@ -54,7 +59,8 @@ export const createUserDocumentFromAuth = async (userAuth) => {
             await setDoc(userDocRef, {
                 displayName,
                 email,
-                createdAt
+                createdAt,
+                ...additionalInformation
             })
         } catch (err) {
             console.log('error creating user', err.message);
@@ -64,3 +70,17 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
     return userDocRef;
 }
+
+export const createAuthUserWithEmailAndPassword = async (email , password) => {
+  if(!email || !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password);
+}
+
+export const appSigninWithEmailAndPassword = async (email, password)=>{
+  if(!email || !password) return;
+  return await signInWithEmailAndPassword(auth, email, password)
+
+}
+
+export const signOutUser = async () => signOut(auth);
