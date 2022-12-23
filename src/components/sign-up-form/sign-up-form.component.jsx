@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+// import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./sign-up.styles.scss";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import './sign-up.styles.scss'
 import Button from "../button/button.component";
-import { UserContext } from "../../contexts/user.context";
+// import { UserContext } from "../../contexts/user.context";
 
 
 const defaultFormFields = {
@@ -19,7 +20,7 @@ export default function SignUpForm() {
   const { displayName, email, password, confirmPassword } = formFields;
 
   //   console.log(formFields)
-  const {setCurrentUser} = useContext(UserContext);
+  // const {setCurrentUser} = useContext(UserContext);
 
   const handleChange = (event) => {
     // event.target  gives us the thing that emitting the trigger
@@ -43,7 +44,7 @@ export default function SignUpForm() {
         password
       );
       
-      setCurrentUser(user)
+      // setCurrentUser(user)
       await createUserDocumentFromAuth(user, {displayName});
 
       resetFormFields();

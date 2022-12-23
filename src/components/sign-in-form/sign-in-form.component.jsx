@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 // import "./sign-up.styles.scss";
 import {
   createAuthUserWithEmailAndPassword,
@@ -10,7 +10,7 @@ import FormInput from "../form-input/form-input.component";
 import "./sign-in.styles.scss";
 import Button from "../button/button.component";
 
-import { UserContext } from "../../contexts/user.context";
+// import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
   email: "",
@@ -22,7 +22,7 @@ export default function SignInForm() {
   const { email, password } = formFields;
 
   //   console.log(formFields)
-  const { setCurrentUser } = useContext(UserContext);
+  // const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     // event.target  gives us the thing that emitting the trigger
@@ -31,9 +31,9 @@ export default function SignInForm() {
   };
 
   const signInWithgoogle = async () => {
-    const { user } = await signInWithGooglePopup();
+    await signInWithGooglePopup();
     // const userDocRef = await createUserDocumentFromAuth(user);
-    await createUserDocumentFromAuth(user);
+    
   };
 
   const resetFormFields = () => {
@@ -45,7 +45,7 @@ export default function SignInForm() {
 
     try {
       const { user } = await appSigninWithEmailAndPassword(email, password);
-      setCurrentUser(user);
+      // setCurrentUser(user);
       resetFormFields();
     } catch (error) {
       const { code } = error;
