@@ -1,9 +1,12 @@
-import { createContext, useState, useEffect, useContext } from "react"; // is store to hold  data
+import { createContext, useState, useEffect } from "react"; // is store to hold  data
 
-import {onAuthStateChangedListener, signOutUser, createUserDocumentFromAuth} from '../utils/firebase/firebase.utils';
+import {
+  onAuthStateChangedListener,
+  signOutUser,
+  createUserDocumentFromAuth,
+} from "../utils/firebase/firebase.utils";
 //actual storage thing , data you want to access
 // also needs a provider
-
 
 export const UserContext = createContext({
   // provide default value
@@ -18,19 +21,22 @@ export const UserProvider = ({ children }) => {
   // value holds the contextual values
 
   //auth object persists
-//   signOutUser();
+  //   signOutUser();
 
   useEffect(() => {
     // will either return null or the user object
-    const unsubscribe = onAuthStateChangedListener((user) =>{
-        if(user){
-            createUserDocumentFromAuth(user);
-        }
-        setCurrentUser(user)
-    })
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
+      setCurrentUser(user);
+    });
 
-    //whatever you return from useeffect unmounts
-    return unsubscribe
+    //whatever you return from useeffect will run what is returned
+    return unsubscribe;
   }, []);
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+
+  return (<UserContext.Provider value={value}>
+    {children}
+    </UserContext.Provider>);
 };
