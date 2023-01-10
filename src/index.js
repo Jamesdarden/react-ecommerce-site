@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./contexts/user.context";
-import { ProductsProvider } from "./contexts/product.context";
+import { CategoriesProvider } from "./contexts/catergories.context";
 import { CartProvider } from "./contexts/cart.context";
 
 class ErrorBoundary extends React.Component {
@@ -68,17 +68,17 @@ class Error2Boundary extends React.Component {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <ErrorBoundary> */}
+    <ErrorBoundary>
       <BrowserRouter>
         <UserProvider>
-          <ProductsProvider>
+          <CategoriesProvider>
             <CartProvider>
               <App />
             </CartProvider>
-          </ProductsProvider>
+          </CategoriesProvider>
         </UserProvider>
       </BrowserRouter>
-    {/* </ErrorBoundary> */}
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

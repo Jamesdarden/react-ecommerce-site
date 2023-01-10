@@ -7,10 +7,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc , collection, writeBatch, query, getDocs} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCUJzYrI884JW4FkelPKif_JjcvL2Kk1ik",
@@ -36,7 +36,43 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 // points to our db
-export const db = getFirestore()
+export const db = getFirestore();
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = collection(db, collectionKey);
+
+  //transaction reqresents a successful unit of work (writes) to a DB
+  // if not successful then the changes that were made get reverted
+
+  const batch = writeBatch(db); 
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object)
+  })
+
+  await batch.commit();
+  console.log('done')
+
+}
+
+export const getCatergoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+
+  const q = query(collectionRef)
+
+  const querySnapShot = await getDocs(q)
+  // the data that is returned lives here 
+  // querySnapShot.docs
+   const catergoryMap = querySnapShot.docs.reduce((acc, docSnapShot) => {
+    const {title, items} = docSnapShot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+   },{});
+
+   return catergoryMap;
+
+}
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation ={}) => {
     if(!userAuth) return;
