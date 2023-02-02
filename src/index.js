@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 
-import { CartProvider } from "./contexts/cart.context";
+
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 
@@ -72,11 +72,7 @@ root.render(
     <ErrorBoundary>
       <Provider store={store}>
         <BrowserRouter>
-   
-            <CartProvider>
-              <App />
-            </CartProvider>
-       
+          <App />     
         </BrowserRouter>
       </Provider>
     </ErrorBoundary>

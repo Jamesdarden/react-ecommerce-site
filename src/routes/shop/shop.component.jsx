@@ -21,12 +21,12 @@ const Shop = () => {
     };
 
     getcategoriesMap();
-  }, []);
+  }, );
 
   return (
 
       <Routes>
-        <Route index element={<CategoriesPreview />} />
+        <Route index element={<CategoriesPreview  />} />
         <Route path=":category" element={<Category />} />
       </Routes>
 
