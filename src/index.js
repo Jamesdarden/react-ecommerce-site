@@ -5,9 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 
-
+import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+
+import {persistor} from './store/store';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -71,9 +73,11 @@ root.render(
   <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
+        <PersistGate persistor={persistor}>
         <BrowserRouter>
           <App />     
         </BrowserRouter>
+        </PersistGate>
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>

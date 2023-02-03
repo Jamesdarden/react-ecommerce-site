@@ -1,6 +1,7 @@
 import {compose, createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
-
+import { persistStore , persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { rootReducer } from './root-reducer';
 // curring a function when a function returns another function
 const loggerMiddleware = (store) => (next) => (action) => {
@@ -15,8 +16,19 @@ const loggerMiddleware = (store) => (next) => (action) => {
 
     console.log('updated state :', store.getState());
 }
-const middleWares= [loggerMiddleware]
+
+const persistorStoreObj = {
+   key: 'root',
+   storage,
+   blacklist:['users']
+}
+
+const persistedReducer = persistReducer(persistorStoreObj, rootReducer)
+
+const middleWares= [process.env.NODE_ENV === 'production' && loggerMiddleware].filter(Boolean)
 
 const composeEnhancers = compose(applyMiddleware(...middleWares))
 
-export const store = createStore(rootReducer, undefined, composeEnhancers)
+export const store = createStore(persistedReducer, undefined, composeEnhancers)
+
+export const persistor = persistStore(store)
