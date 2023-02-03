@@ -10,18 +10,15 @@ import Category from "../category/category.component";
 import { getcategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
 import { setCategories } from "../../store/categories/category.actions";
 
+import { fetchCategoriesAsync } from "../../store/categories/category.actions";
+
 const Shop = () => {
   const dispatch = useDispatch()
 
   //when useEffect needs to be async then you need to create a function inside that is async
   useEffect(() => {
-    const getcategoriesMap = async () => {
-      const categoriesArray = await getcategoriesAndDocuments('categories');
-      dispatch(setCategories(categoriesArray));
-    };
-
-    getcategoriesMap();
-  }, );
+      dispatch(fetchCategoriesAsync());
+  }, []);
 
   return (
 

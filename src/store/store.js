@@ -3,6 +3,8 @@ import {compose, createStore, applyMiddleware} from 'redux';
 import { persistStore , persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { rootReducer } from './root-reducer';
+
+import thunk from 'redux-thunk';
 // curring a function when a function returns another function
 const loggerMiddleware = (store) => (next) => (action) => {
  if(!action.type) {
@@ -20,12 +22,12 @@ const loggerMiddleware = (store) => (next) => (action) => {
 const persistorStoreObj = {
    key: 'root',
    storage,
-   blacklist:['users']
+   whitelist:['cart']
 }
 
 const persistedReducer = persistReducer(persistorStoreObj, rootReducer)
 
-const middleWares= [process.env.NODE_ENV === 'production' && loggerMiddleware].filter(Boolean)
+const middleWares= [process.env.NODE_ENV !== 'production' && loggerMiddleware ,thunk].filter(Boolean)
 
 const composeEnhancers = compose(applyMiddleware(...middleWares))
 
