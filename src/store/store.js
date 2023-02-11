@@ -1,4 +1,4 @@
-import {compose, legacyCreateStore as createStore, applyMiddleware} from 'redux';
+import {compose,  legacy_createStore as createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
 import { persistStore , persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
